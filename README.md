@@ -17,7 +17,7 @@ Before you install **"Wraith on Kalabox"**  we assume you have [installed Kalabo
 cd /path/to/my/app
 
 # Install plugin with npm
-npm install https://github.com/kalabox/kalabox-plugin-wraith.git
+npm install https://github.com/kalabox/kalabox-plugin-wraith.git --save
 ```
 
 **Activate the plugin**
@@ -41,10 +41,86 @@ kbox restart -- -d
 Using Wraith
 ------------
 
+You will want to confer with the [Wraith documentation](http://bbc-news.github.io/wraith/) on the various commands you can run with wraith. Here is how you invoke  `wraith` commands via Kalabox.
 
+`kbox wraith <wraith arguments>`
+
+```
+Options:
+  -h, --help     Display help message.                                      [boolean]
+  -v, --verbose  Use verbose output.                                        [boolean]
+  -d, --debug    Use debug output.                                          [
+```
+
+```bash
+# Do the wraith setup
+kbox wraith setup
+
+# Run capture using the generated config file
+kbox wraith capture configs/capture.yaml
+```
 
 Configuring Wraith
 ------------------
+
+`kbox wraith setup`
+
+This will generate the normal wraith config files. They will be accesibile inside of your app at `config/wraith`.
+
+You should note that the `directory` key in your config below is for paths inside of the wraith container and NOT on your local machine. That said your entire app directory will be shared inside of the container at `/src`. This means that in a default app setup setting `directory` to `/src/code/shots` should make your screenshots available at `http://myapp.kbox/shots/gallery.html`. Obviously this can very based on your webser config.
+
+Here is an example config `wraith capture` config file.
+
+```yaml
+# (required) The engine to run Wraith with. Examples: 'phantomjs', 'casperjs', 'slimerjs'
+browser: "phantomjs"
+
+# (required) The domains to take screenshots of.
+domains:
+  current:  "http://playbox.kalamuna.com/"
+  new:      "http://playbox.kbox"
+
+# (required) The paths to capture. All paths should exist for both of the domains specified above.
+paths:
+  home:     /
+
+# (required) Screen widths (and optional height) to resize the browser to before taking the screenshot.
+screen_widths:
+  - 320
+  - 600x768
+  - 768
+  - 1024
+  - 1280
+
+# (optional) JavaScript file to execute before taking screenshot of every path. Default: nil
+before_capture: 'javascript/disable_javascript--phantom.js'
+
+# (required) The directory that your screenshots will be stored in
+directory: '/src/code/shots'
+
+# (required) Amount of fuzz ImageMagick will use when comparing images. A higher fuzz makes the comparison less strict.
+fuzz: '20%'
+
+# (optional) The maximum acceptable level of difference (in %) between two images before Wraith reports a failure. Default: 0
+threshold: 5
+
+# (optional) Specify the template (and generated thumbnail sizes) for the gallery output.
+gallery:
+  template: 'slideshow_template' # Examples: 'basic_template' (default), 'slideshow_template'
+  thumb_width:  200
+  thumb_height: 200
+
+# (optional) Choose which results are displayed in the gallery, and in what order. Default: alphanumeric
+# Options:
+#   alphanumeric - all paths (with or without a difference) are shown, sorted by path
+#   diffs_first - all paths (with or without a difference) are shown, sorted by difference size (largest first)
+#   diffs_only - only paths with a difference are shown, sorted by difference size (largest first)
+# Note: different screen widths are always grouped together.
+mode: diffs_first
+
+```
+
+Here are some more [basic config examples](http://bbc-news.github.io/wraith/configs.html).
 
 For Developers
 --------------

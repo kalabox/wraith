@@ -1,0 +1,37 @@
+name: playbox
+type: pantheon
+plugins:
+  - kalabox-plugin-pantheon
+  - kalabox-plugin-wraith
+pluginconfig:
+  cli: 'on'
+  sharing:
+    share: 'data:/code'
+    ignore:
+      - Name sites/default/files
+  services:
+    web:
+      - port: 8888/tcp
+        default: true
+      - port: 444/tcp
+        default: true
+        secure: true
+    edge:
+      - port: 80/tcp
+        hostname: edge
+      - port: 443/tcp
+        hostname: edge
+        secure: true
+  pantheon:
+    site: playbox
+    env: dev
+    framework: drupal
+    php: 53
+    upstream:
+      url: 'https://github.com/populist/panopoly-drops-7.git'
+      branch: master
+    uuid: f0072597-f475-4513-af94-13a33b630923
+    images: v0.13.0-beta.2
+    name: Mike Pirog
+    email: mike@kalabox.io
+version: 0.13.0-beta.2

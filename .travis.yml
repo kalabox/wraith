@@ -30,6 +30,24 @@ script:
   # Run code tests
   - grunt test:code
 
+  # Pull down a pantheon site so we can test out wraith
+  - mkdir -p ~/apps
+  - cd ~/apps
+  - kbox create pantheon -- --token=$PANTHEON_TOKEN --site=playbox --env=dev --name=playbox -d
+
+  # Go into app directory and install and activate our plugin
+  - cd pantheon
+  - mkdir -p plugins
+  - cp -rfa "$TRAVIS_BUILD_DIR/." plugins/kalabox-plugin-wraith
+  - cp -f "$TRAVIS_BUILD_DIR/test/kalabox.yml" kalabox.yml
+
+  # Do the wraith setup and then copy our prefap config file over
+  - kbox wraith setup
+  - cp -f "$TRAVIS_BUILD_DIR/test/capture.yaml" config/wraith/configs/capture.yaml
+
+  # Run a basic capture
+  - kbox wraith capture configs/capture.yaml
+
 cache:
   directories:
   - node_modules
@@ -41,6 +59,8 @@ notifications:
     - mike@kalabox.io
     - alec@kalabox.io
     on_success: always
+
 env:
   global:
+  - secure: "Gtw+fapO/IfZmFBQcizGkHB3GjpHt26m84Gaa6LiWQUAx6B4fl4310xrygnfi4TSlrcXf+XpevE1bJD0etp/f4lcC9kjZcJmKdyPa47TIbgJ7R8LXu4vy1SV/hvCPt1PzBhbST70eIwPR8fLa2TzLLt4P7dRRsxT3OUBuM3N/y3/7MCG/tLCZcLTj+Cn5xiUbkyuV4z87MPJritKEnmIsjmLpX5UHwUts9XaLIFgyvuKQb7/Kat1lRbIh+OU2g2j3+f5NCcY/TZSMIECRHHbRjZICIhYBnOL0nZLOOCwaV7ulBw7FLq/LjZsoUBnlEqUfGQJqlpwOScxcGcYcZsle3wn6Em/+WbISkkLh+Y85cWm8PvXhXCQbZOSJ/+SRZlCMQE4NKVeIkRHkkzinoUjHBALUdxvrjm8vnSgqvoIRTqJYzeCn1bUXf6L57SgYe5pdcZ0CW1tJkDpkYJRYNirwWFiilz+IIvppO4OrEDR3ph2tH2Oz7z3tnCeZvof3gA1Ns24l+tCRDsjExx/DJwbqB9rUZiqmrl3zll5gKO0bvPVRPPK6KWu/ytkkCfTYfElHZQeuVf0YI5RE8ehpZpAZRZ8r2FIcDr+jIaqxFGD7ClsxgC5wL9W7L86fzjZEZbI2IbRW3WdXgtAMxyZYG51Dmx9XaY+UK1WBGTooWah41g="
   - DOCKER_HOST: tcp://10.13.37.100:2375
