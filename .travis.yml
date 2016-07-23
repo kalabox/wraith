@@ -36,7 +36,7 @@ script:
   - kbox create pantheon -- --token=$PANTHEON_TOKEN --site=playbox --env=dev --name=playbox -d
 
   # Go into app directory and install and activate our plugin
-  - cd pantheon
+  - cd playbox
   - mkdir -p plugins
   - cp -rfa "$TRAVIS_BUILD_DIR/." plugins/kalabox-plugin-wraith
   - cp -f "$TRAVIS_BUILD_DIR/test/kalabox.yml" kalabox.yml
