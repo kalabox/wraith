@@ -1,0 +1,8 @@
+#
+# Adds a wraith command to your app.
+#
+wraith:
+  service: wraith
+  entrypoint: wraith
+  description: Run a wraith command
+  mapping: <config.sharing.codeDir>:/code
