@@ -44,7 +44,7 @@ script:
 
   # Do the wraith setup and then copy our prefap config file over
   - kbox wraith setup
-  - cp -f "$TRAVIS_BUILD_DIR/test/capture.yaml" config/wraith/configs/capture.yaml
+  - sudo cp -f "$TRAVIS_BUILD_DIR/test/capture.yaml" config/wraith/configs/capture.yaml
 
   # Run a basic capture
   - kbox wraith capture configs/capture.yaml
