@@ -17,7 +17,7 @@ Before you install **"Wraith on Kalabox"**  we assume you have [installed Kalabo
 cd /path/to/my/app
 
 # Install plugin with npm
-npm install https://github.com/kalabox/kalabox-plugin-wraith.git --save
+npm install https://github.com/kalabox/wraith.git --save
 ```
 
 **Activate the plugin**
