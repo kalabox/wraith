@@ -15,7 +15,7 @@
   },
   "bugs": {
     "url": "http://github.com/kalabox/kalabox-app-pantheon",
-    "email": "mike@kalamuna.com"
+    "email": "mike@lando.dev"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
